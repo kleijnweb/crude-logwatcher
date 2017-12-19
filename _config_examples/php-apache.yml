@@ -1,0 +1,42 @@
+reader:
+  workfile: '/tmp/logwatcher_work.json'
+  paths:
+    - '/var/log/apache2/error.log'
+    - '/var/www/current/app/*.log'
+  escalate:
+    WARNING:
+      count: 20
+      level: ERROR
+    ERROR:
+      count: 10
+      level: CRITICAL
+    CRITICAL:
+      count: 5
+      level: EMERGENCY
+
+parser:
+  whitelist:
+    - "Ignore me"
+  matchers:
+    apache:
+      pattern: '\[(?P<timestamp>[A-Z][a-z]+ [A-Z][a-z]+ [0-9]{1,2} [0-9]{2}\:[0-9]{2}\:[0-9]{2})\.[0-9]+ [0-9]{4}\]\s\[.*\] \[.*\] \[.*\] [A-Z0-9]+\:\s(?P<message>.*)'
+      defaults: { level: 'ERROR' }
+      translate:
+        level:
+          'PHP Warning': 'WARNING'
+          'PHP Notice': 'NOTICE'
+    monolog:
+      pattern: '\[(?P<ts>[0-9]{4}\-[0-9]{2}\-[0-9]{2} [0-9]{2}\:[0-9]{2}\:[0-9]{2})\]\s(?P<channel>[a-z\-\.]+)\.(?P<level>[A-Z]+)\:\s(?P<message>.*)\s(?P<data1>(\{|\[).*(\}|\]))\s(?P<data2>(\{|\[).*(\}|\]))'
+
+report:
+  thresholds:
+    NOTICE: 30,
+    WARNING: 10,
+    ERROR: 1
+    CRITICAL: 1
+    EMERGENCY: 1
+  writers:
+    slack:
+      url: 'https://hooks.slack.com/services/XXXXX/XXXXX/XXXXX'
+      channel: 'app_logs'
+    stdout: ~
