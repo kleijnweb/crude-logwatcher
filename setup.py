@@ -8,7 +8,7 @@ install_requires = [
     'PyYAML>=3.11',
     'requests>=2.9.1',
     'typing>=3.6.1; python_version < "3.6"',
-    'python-dateutil'
+    'python-dateutil>=2.4.2'
 ]
 
 tests_require = [
