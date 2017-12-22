@@ -4,8 +4,8 @@ from unittest.mock import patch, mock_open
 import pytest
 
 from logwatcher.config import App, ConfigError
-from logwatcher.reader import LogReader
 from logwatcher.output import ReportWriter, SlackReportWriter
+from logwatcher.reader import LogReader
 
 
 def test_will_fail_if_config_file_does_not_exist():

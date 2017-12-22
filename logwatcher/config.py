@@ -1,8 +1,11 @@
-from typing import List, Dict
+from typing import Dict, List
+
 import yaml
+
+from logwatcher.output import (OutputBuffer, SlackReportWriter,
+                               StdOutReportWriter)
 from logwatcher.parser import LineParser, Matcher
 from logwatcher.reader import LogReader
-from logwatcher.output import SlackReportWriter, StdOutReportWriter, OutputBuffer
 
 
 class ConfigError(RuntimeError):
@@ -20,6 +23,7 @@ class App(object):
     def get_reader(self) -> LogReader:
         try:
             return LogReader(
+                work_file_path=self.config.get('work_file'),
                 parser=LineParser(
                     self.__create_matchers(self.config['parser']['matchers']),
                     self.config['parser'].get('whitelist')

@@ -8,14 +8,13 @@ install_requires = [
     'PyYAML>=3.11',
     'requests>=2.9.1',
     'typing>=3.6.1; python_version < "3.6"',
+    'python-dateutil'
 ]
 
 tests_require = [
-    'decorator',
     'mock',
     'pytest',
-    'pytest-cov',
-    'testfixtures'
+    'pytest-cov'
 ]
 
 
@@ -63,7 +62,7 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require={'tests': tests_require},
-    cmdclass={'tests': PyTest},
+    cmdclass={'test': PyTest},
     test_suite='tests',
     classifiers=[
         'Programming Language :: Python :: 3 :: Only',
@@ -71,6 +70,5 @@ setup(
         'Operating System :: POSIX :: Linux',
         'Topic :: Internet :: Log Analysis'
     ],
-    include_package_data=True,
-    entry_points={'console_scripts': ['logwatcher = logwatcher.main']}
+    #entry_points={'console_scripts': ['logwatcher = logwatcher.main']}
 )

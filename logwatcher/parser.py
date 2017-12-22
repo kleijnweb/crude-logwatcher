@@ -1,7 +1,9 @@
 import re
 from datetime import datetime
 from typing import List
+
 import dateutil.parser
+
 from logwatcher.level import LogLevel
 
 
@@ -16,7 +18,7 @@ class LogRecord(object):
 class Matcher(object):
     required_keys = ['ts', 'message', 'level']
 
-    def __init__(self, pattern: str, defaults: dict=None, translate: dict=None):
+    def __init__(self, pattern: str, defaults: dict = None, translate: dict = None):
         self.pattern = pattern
         self.defaults = {} if defaults is None else defaults
         self.translate = {} if translate is None else translate

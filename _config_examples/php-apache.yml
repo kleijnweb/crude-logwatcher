@@ -1,5 +1,5 @@
 reader:
-  workfile: '/tmp/logwatcher_work.json'
+  work_file: '/tmp/logwatcher_work.json'
   paths:
     - '/var/log/apache2/error.log'
     - '/var/www/current/app/*.log'

@@ -3,23 +3,31 @@ import json
 import os
 from typing import List
 
-from logwatcher.parser import LineParser
 from logwatcher.output import OutputBuffer
+from logwatcher.parser import LineParser
 
 
 class LogReader(object):
-    def __init__(self, workfile: str, paths: List[str], parser: LineParser, buffer: OutputBuffer):
-        self.workfile = workfile
+    def __init__(self, paths: List[str], parser: LineParser, buffer: OutputBuffer, work_file_path: str = None):
+        self.work_file_path = work_file_path
         self.paths = paths
         self.buffer = buffer
         self.parser = parser
+        self.work_file = None
 
     def read(self):
-        work_file = open(self.workfile, 'a+')
-        s = work_file.read()
-        work_file.truncate(0)
+
+        if self.work_file_path:
+            self.work_file = open(self.work_file_path, os.O_EXCL | os.O_RDWR)
+        else:
+            import tempfile
+            self.work_file = tempfile.TemporaryFile()
+
+        s = self.work_file.read()
+        self.work_file.truncate(0)
         old_work = json.loads(s) if s else {}
         new_work = {}
+
         try:
             log_paths = filter(None, self.paths)
             for path_glob in log_paths:
@@ -41,7 +49,8 @@ class LogReader(object):
                             fpos += len(line)
                             new_work[logfile] = fpos
                             line = line.rstrip()
-                            if not line: break
+                            if not line:
+                                break
                             record = self.parser.parse(line, logfile)
                             if record:
                                 self.buffer.add(record)
@@ -54,5 +63,5 @@ class LogReader(object):
 
                 self.buffer.flush()
         finally:
-            work_file.write(json.dumps(new_work))
-            work_file.close()
+            self.work_file.write(json.dumps(new_work))
+            self.work_file.close()
