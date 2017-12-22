@@ -2,7 +2,7 @@ import datetime
 
 import pytest
 
-from logwatcher.parser import Matcher, LineParser, LogRecord
+from logwatcher.parser import LineParser, LogRecord, Matcher
 
 
 def test_will_fail_when_missing_keys():
