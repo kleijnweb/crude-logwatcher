@@ -69,6 +69,5 @@ setup(
         'Intended Audience :: Information Technology',
         'Operating System :: POSIX :: Linux',
         'Topic :: Internet :: Log Analysis'
-    ],
-    #entry_points={'console_scripts': ['logwatcher = logwatcher.main']}
+    ]
 )
